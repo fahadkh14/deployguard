@@ -50,8 +50,8 @@ jobs:
 
   build-and-push:
     strategy:
-    matrix:
-      floder: ['fronted', 'backend']
+      matrix:
+        floder: ['fronted', 'backend']
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
