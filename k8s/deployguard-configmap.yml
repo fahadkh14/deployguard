@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: deployguard-config 
+  namespace: deployguard
+
+data:
+
+  DB_HOST: deployguard-postgres
+  DB_PORT: "5432"
+  DB_NAME: deployguard
+  DB_USER: deployguard_user
+  FRONTEND_URL: http://localhost:5173

@@ -1,0 +1,75 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: deployguard-postgres
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: ${DB_NAME:-deployguard}
+      POSTGRES_USER: ${DB_USER:-deployguard_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+
+    ports:
+      - "${DB_PORT:-5432}:5432"
+
+    volumes:
+      - deployguard_pgdata:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${DB_USER:-deployguard_user} -d ${DB_NAME:-deployguard}"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 60s
+
+    networks:
+      - deployguard-network
+
+  backend:
+    image: fahadkh14/deployguard-backend-latest
+    container_name: deployguard-backend
+    restart: always
+
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME:-deployguard}
+      DB_USER: ${DB_USER:-deployguard_user}
+      DB_PASSWORD: ${DB_PASSWORD}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:5173}
+
+    ports:
+      - "${BACKEND_PORT:-8080}:8080"
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+    networks:
+      - deployguard-network
+
+  frontend:
+    image: fahadkh14/deployguard-frontend-latest
+    container_name: deployguard-frontend
+    restart: always
+
+    ports:
+      - "5173:80"
+
+    depends_on:
+      - backend
+
+    networks:
+      - deployguard-network
+
+volumes:
+  deployguard_pgdata:
+
+networks:
+  deployguard-network:
+    driver: bridge

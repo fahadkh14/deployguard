@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: deployguard
+  labels:
+    app: frontend-deployguard
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: frontend-deployguard
+  template:
+    metadata:
+      labels:
+        app: frontend-deployguard
+    spec:
+      containers:
+        - name: frontend-deployguard
+          image: deployguard-frontend:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 80
+          envFrom:                  #
+            - configMapRef:          #
+                name: deployguard-config  #
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "24Mi"
+            limits:
+              cpu: "500m"
+              memory: "48Mi"

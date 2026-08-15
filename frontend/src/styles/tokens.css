@@ -1,0 +1,121 @@
+/* =====================================================================
+   DeployGuard — Design tokens
+   A graphite/industrial "control room" palette with an amber signal accent,
+   reflecting a real internal deployment console rather than a marketing site.
+   ===================================================================== */
+
+:root {
+  /* Surfaces */
+  --bg-base: #0E1116;
+  --bg-surface: #161A22;
+  --bg-surface-2: #1D222C;
+  --bg-surface-3: #262C38;
+  --border: #2A3040;
+  --border-strong: #3A4154;
+
+  /* Text */
+  --text-primary: #E9ECF3;
+  --text-secondary: #939CB0;
+  --text-tertiary: #626B80;
+
+  /* Accent — amber signal light, evokes a status lamp on a rack */
+  --accent: #F2A93B;
+  --accent-dim: #7A5A22;
+  --accent-soft-bg: rgba(242, 169, 59, 0.12);
+
+  /* Status colors */
+  --status-success: #35D399;
+  --status-success-bg: rgba(53, 211, 153, 0.13);
+  --status-failed: #F1576E;
+  --status-failed-bg: rgba(241, 87, 110, 0.13);
+  --status-running: #4EA1F7;
+  --status-running-bg: rgba(78, 161, 247, 0.13);
+  --status-queued: #ADB4C4;
+  --status-queued-bg: rgba(173, 180, 196, 0.13);
+  --status-rolledback: #B587F5;
+  --status-rolledback-bg: rgba(181, 135, 245, 0.13);
+
+  /* Typography */
+  --font-display: 'Space Grotesk', 'Segoe UI', sans-serif;
+  --font-body: 'Inter', 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+
+  /* Radius & shadow */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --shadow-elevated: 0 8px 30px rgba(0, 0, 0, 0.35);
+
+  /* Layout */
+  --sidebar-width: 240px;
+  --topbar-height: 64px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  background-image:
+    radial-gradient(circle at 15% 0%, rgba(242, 169, 59, 0.035), transparent 40%),
+    radial-gradient(circle at 85% 20%, rgba(78, 161, 247, 0.03), transparent 45%);
+  background-attachment: fixed;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+p { margin: 0; }
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: var(--font-body);
+}
+
+code, .mono {
+  font-family: var(--font-mono);
+}
+
+::selection {
+  background: var(--accent-soft-bg);
+  color: var(--text-primary);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-tertiary); }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

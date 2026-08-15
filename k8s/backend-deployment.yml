@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: backend
+  namespace: deployguard
+  labels:
+    app: backend-deployguard
+
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: backend-deployguard
+
+  template:
+    metadata:
+      labels:
+        app: backend-deployguard
+
+    spec:
+      containers:
+        - name: backend-deployguard
+          image: deployguard-backend:latest
+          imagePullPolicy: Never
+
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://postgres-service:5432/deployguard
+
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: deployguard-config
+                  key: DB_USER
+
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: deployguard-db
+                  key: DB_PASSWORD
+
+            - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+              value: update
+
+      
+
+          
