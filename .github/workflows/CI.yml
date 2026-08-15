@@ -1,9 +1,9 @@
 on:
   push:
-    branches: [main]
+    branches: [feat/matrix-docker-build]
 
 jobs:
-  fronted:
+  lint-fronted:
     runs-on: ubuntu-latest
 
     steps:
@@ -25,21 +25,10 @@ jobs:
         run: npm run lint
         working-directory: frontend
 
-      - name: Docker Sethub [Login]
-        uses: docker/login-action@v4
-        with:
-          username: ${{ vars.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Docker Build and push
-        uses: docker/build-push-action@v7
-        with:
-          context: ./frontend
-          push: true
-          tags: ${{ vars.DOCKERHUB_USERNAME}}/deployguard-fe-latest 
+      
 
 
-  backend:
+  lint-backend:
     runs-on: ubuntu-latest
 
     steps:
@@ -57,20 +46,33 @@ jobs:
         run: mvn clean package -DskipTests
         working-directory: backend
 
+      
+
+  build-and-push:
+    strategy:
+    matrix:
+      floder: ['fronted', 'backend']
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v7
+
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ vars.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}  
 
-      - name: Build and Push Backend Image
+      - name: Build and Push  Image
         uses: docker/build-push-action@v7
         with:
-          context: ./backend
+          context: ./${{ matrix.floder }}
           push: true
-          tags:  ${{ vars.DOCKERHUB_USERNAME}}/deployguard-back-latest 
+          tags:  ${{ vars.DOCKERHUB_USERNAME}}/deployguard-${{ matrix.floder }}-latest 
+    
+
   deploy:
-    needs: [fronted, backend]
+    needs: [lint-fronted, lint-backend, build-and-push]
     uses: ./.github/workflows/CD.yml
     secrets: inherit      
   

@@ -2,7 +2,7 @@ name: Java Backend Build
 
 on:
   push:
-    branches: [advanced]
+    branches: [feat/matrix-docker-build]
   workflow_dispatch:
 
 jobs:
