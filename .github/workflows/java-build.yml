@@ -1,0 +1,30 @@
+name: Java Backend Build
+
+on:
+  push:
+    branches: [advanced]
+  workflow_dispatch:
+
+jobs:
+  code-format:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        java: ['19', '20', '21']
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v7
+
+      - name: Set up JDK
+        uses: actions/setup-java@v5
+        with:
+          java-version: ${{ matrix.java }}
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build Backend
+        run: mvn clean package -DskipTests -Djava.version=${{ matrix.java }}
+        working-directory: backend
