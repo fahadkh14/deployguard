@@ -1,5 +1,3 @@
-# Goal - Ensure packages and dependencies have been audited for security
-
 name: Dependency Scan
 
 on:
@@ -51,5 +49,7 @@ jobs:
       # Backend Dependency Scan
       # -------------------------
       - name: Run Maven Dependency Check
-        run: mvn org.owasp:dependency-check-maven:check
+        env:
+          NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+        run: mvn org.owasp:dependency-check-maven:check -DnvdApiKeyEnvironmentVariable=NVD_API_KEY
         working-directory: backend
