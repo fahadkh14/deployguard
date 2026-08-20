@@ -12,5 +12,5 @@ jobs:
       uses: ./.github/workflows/code-quality.yml
 
       #serect Scanning
-      serect-scanning:
+      secret-scanning:
         uses: ./.github/workflows/secret-scanning.yml
