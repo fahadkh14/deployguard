@@ -10,3 +10,7 @@ jobs:
 
     code-quality:
       uses: ./.github/workflows/code-quality.yml
+
+      #serect Scanning
+      serect-Scanning:
+        uses: ./.github/workflows/secret-scanning.yml
