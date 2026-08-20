@@ -34,3 +34,16 @@ jobs:
       - name: Docker Build ${{ matrix.folders }}
         run: docker build -t ${{ vars.DOCKERHUB_USERNAME }}//deployguard-${{ matrix.folders }}:latest 
         working-directory: ${{ matrix.folders }}
+
+      # -------------------------
+      # Trivy Image Security Scan
+      # -------------------------
+      - name: Scan ${{ matrix.folders }} Docker Image
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: deployguard-${{ matrix.folders }}:scan
+          format: table
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'HIGH,CRITICAL'
