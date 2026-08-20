@@ -1,1 +1,24 @@
 # Goal - Ensure the docker files and Docker images are security Tested# Goal - To ensure my running application is free from OWASP top 10 security issues
+
+
+name: Docker scan
+
+on:
+    workflow_call:
+
+jobs:
+    docker-file-lint-and-scan:
+        runs-on: ubuntu-latest
+        strategy:
+              fail-fast: false
+              matrix:
+                  folders: ['backend', 'frontend']
+        steps:
+            - name: Code checkout
+              uses: actions/checkout@v7
+
+            - name: ${{matrix.floders}} Docker Lint
+              uses: hadolint/hadolint-action@v3.1.0
+              with:
+                dockerfile: ${{matrix.floders}}/Dockerfile
+                
