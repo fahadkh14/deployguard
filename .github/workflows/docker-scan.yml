@@ -18,30 +18,42 @@ jobs:
 
     steps:
 
+      # -----------------------------------
       # Checkout source code
+      # -----------------------------------
       - name: Code Checkout
         uses: actions/checkout@v4
 
+      # -----------------------------------
       # Dockerfile Lint
+      # -----------------------------------
       - name: ${{ matrix.folders }} Dockerfile Lint
         uses: hadolint/hadolint-action@v3.1.0
         with:
           dockerfile: ${{ matrix.folders }}/Dockerfile
           ignore: SC2016
 
+      # -----------------------------------
       # Docker Hub Login
+      # -----------------------------------
       - name: Docker Setup [Login]
         uses: docker/login-action@v4
         with:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      # -----------------------------------
       # Docker Build
+      # -----------------------------------
       - name: Docker Build ${{ matrix.folders }}
-        run: docker build -t ${{ vars.DOCKERHUB_USERNAME }}/devboard-${{ matrix.folders }}:latest .
-        working-directory: ${{ matrix.folders }}
+        run: |
+          docker build \
+            --tag "${{ vars.DOCKERHUB_USERNAME }}/devboard-${{ matrix.folders }}:latest" \
+            "${{ matrix.folders }}"
 
+      # -----------------------------------
       # Trivy Vulnerability Scanner
+      # -----------------------------------
       - name: Run Trivy Vulnerability Scanner
         uses: aquasecurity/trivy-action@v0.36.0
         with:
