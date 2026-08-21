@@ -6,27 +6,20 @@ on:
       - main
 
 jobs:
-  # -----------------------------
+
   # Code Quality
-  # -----------------------------
   code-quality:
     uses: ./.github/workflows/code-quality.yml
 
-  # -----------------------------
   # Secret Scanning
-  # -----------------------------
   secret-scanning:
     uses: ./.github/workflows/Secret-scanning.yml
 
-  # -----------------------------
   # Dependency Checks
-  # -----------------------------
   dependency-checks:
     uses: ./.github/workflows/dependency.yml
 
-  # -----------------------------
   # Docker Security Checks
-  # -----------------------------
   docker-checks:
     uses: ./.github/workflows/docker-scan.yml
     secrets: inherit
