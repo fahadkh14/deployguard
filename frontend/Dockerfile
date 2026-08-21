@@ -11,10 +11,18 @@ RUN npm ci
 COPY . .
 RUN npm run build
 
+
+# -----------------------------------
+# Production Runtime
+# -----------------------------------
 FROM nginx:1.27-alpine
+
+# Update Alpine packages to security-fixed versions
+RUN apk update && apk upgrade --no-cache
 
 COPY --from=build /app/dist /usr/share/nginx/html
 
+# Nginx configuration
 RUN printf '%s\n' \
 'server {' \
 '    listen 80;' \
