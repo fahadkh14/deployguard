@@ -19,6 +19,16 @@ jobs:
           java-version: '21'
           cache: maven
 
+      - name: Install Maven
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y maven
+
+      - name: Verify Java and Maven
+        run: |
+          java -version
+          mvn -version
+
       - name: Build Backend
         working-directory: backend
         run: mvn clean package -DskipTests
