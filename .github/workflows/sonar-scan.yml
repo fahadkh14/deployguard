@@ -3,18 +3,28 @@ name: deployguard
 on:
   workflow_call:
 
-
 jobs:
   sonar-scan:
-    name: Sonar Scanning 
-    runs-on: self-hosted   
+    name: Sonar Scanning
+    runs-on: self-hosted
 
     steps:
       - name: Code Checkout
         uses: actions/checkout@v4
 
-      - name:  SonarQube Scan
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Build Backend
+        working-directory: backend
+        run: mvn clean package -DskipTests
+
+      - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v8.2.0
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} 
-          SONAR_HOST_URL: http://localhost:9000  
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: http://localhost:9000
