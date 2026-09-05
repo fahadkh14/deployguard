@@ -31,7 +31,7 @@ services:
       - deployguard-network
 
   backend:
-    image: fahadkh14/deployguard-backend-latest
+    image: fahadkh14/deployguard-backend:latest
     container_name: deployguard-backend
     restart: always
 
@@ -54,7 +54,7 @@ services:
       - deployguard-network
 
   frontend:
-    image: fahadkh14/deployguard-frontend-latest
+    image: fahadkh14/deployguard-frontend:latest
     container_name: deployguard-frontend
     restart: always
 
