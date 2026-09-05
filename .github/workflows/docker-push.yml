@@ -27,4 +27,4 @@ jobs:
         with:
           context: ./${{ matrix.folders }}
           push: true
-          tags: ${{ vars.DOCKERHUB_USERNAME }}/deployguard-${{ matrix.folders }}:latest
+          tags: fahadkh14/deployguard-${{ matrix.folders }}:latest
