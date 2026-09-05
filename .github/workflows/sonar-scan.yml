@@ -7,7 +7,7 @@ on:
 jobs:
   sonar-scan:
     name: Sonar Scanning 
-    runs-on: self-hosted    
+    runs-on: ubuntu-latest    
 
     steps:
       - name: Code Checkout
