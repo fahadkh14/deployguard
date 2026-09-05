@@ -1,0 +1,28 @@
+name: Deployguard 
+
+on:
+  workflow_call:
+
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        folders: ['backend', 'frontend']
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Docker Login
+        uses: docker/login-action@v4
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Docker Build and Push
+        uses: docker/build-push-action@v6
+        with:
+          context: ./${{ matrix.folders }}
+          push: true
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/deployguard-${{ matrix.folders }}:latest
