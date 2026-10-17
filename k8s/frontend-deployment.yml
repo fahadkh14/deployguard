@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: frontend-deployguard
-          image: deployguard-frontend:latest
+          image: fahadkh14/deployguard-frontend
           imagePullPolicy: Always
           ports:
             - containerPort: 80
