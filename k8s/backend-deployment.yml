@@ -23,7 +23,7 @@ spec:
       containers:
         - name: backend-deployguard
           image: deployguard-backend:latest
-          imagePullPolicy: Never
+          imagePullPolicy: Always
 
           ports:
             - name: http
